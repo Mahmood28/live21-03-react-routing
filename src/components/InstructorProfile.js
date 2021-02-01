@@ -1,28 +1,29 @@
 import { Button, ButtonsWrapper } from "./styles";
+import { useParams, Redirect, Link } from "react-router-dom";
 
-const InstructorProfile = ({ instructors, instructorSlug, goTo }) => {
+const InstructorProfile = ({ instructors }) => {
+  const { instructorSlug } = useParams();
   const instructor = instructors.find(
     (instructor) => instructor.slug === instructorSlug
   );
 
-  if (!instructor) goTo("/404");
+  const goToGitHub = () =>
+    window.open(`https://github.com/${instructor.github}`);
 
-  const { name, emoji, github, description } = instructor;
-
-  const goToGitHub = () => window.open(`https://github.com/${github}`);
-
-  return (
+  return !instructor ? (
+    <Redirect to="/404" />
+  ) : (
     <>
-      <h1>{emoji}</h1>
-      <h2>{name}</h2>
-      <p>{description}</p>
+      <h1>{instructor.emoji}</h1>
+      <h2>{instructor.name}</h2>
+      <p>{instructor.description}</p>
 
       <ButtonsWrapper>
-        <div onClick={() => goTo("/")}>
+        <Link to="/">
           <Button color="tomato" textColor="white">
             Go back home
           </Button>
-        </div>
+        </Link>
         <Button onClick={goToGitHub}>Go to GitHub</Button>
       </ButtonsWrapper>
     </>

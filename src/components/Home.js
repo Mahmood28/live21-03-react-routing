@@ -1,15 +1,15 @@
 import InstructorTag from "./InstructorTag";
+import { useParams, Redirect } from "react-router-dom";
 
-const Home = ({ instructors, goTo }) => {
-  return (
+const Home = ({ instructors }) => {
+  const { slug } = useParams();
+  return slug ? (
+    <Redirect to="/404" />
+  ) : (
     <>
       <h2>When in doubt, ask for help!</h2>
       {instructors.map((instructor) => (
-        <InstructorTag
-          instructor={instructor}
-          key={instructor.slug}
-          goTo={goTo}
-        />
+        <InstructorTag instructor={instructor} key={instructor.slug} />
       ))}
     </>
   );
